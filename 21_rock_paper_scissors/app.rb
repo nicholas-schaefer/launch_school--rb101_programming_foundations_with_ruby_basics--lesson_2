@@ -55,20 +55,18 @@ def update_computer_choice
 end
 
 def update_round_winner(user_selection, computer_selection)
-  case user_selection
-  when  "rock"
-    return "user" if computer_selection == "scissors"
-    return "computer" if computer_selection == "paper"
-    return "nobody" if computer_selection == "rock"
-  when  "paper"
-    return "user" if computer_selection == "rock"
-    return "computer" if computer_selection == "scissors"
-    return "nobody" if computer_selection == "paper"
-  when  "scissors"
-    return "user" if computer_selection == "paper"
-    return "computer" if computer_selection == "rock"
-    return "nobody" if computer_selection == "scissors"
-  end
+  matchup_winner = {
+    rock: {     rock: nil, paper: false, scissors: true },
+    paper: {    rock: true, paper: false, scissors: nil },
+    scissors: { rock: true, paper: false, scissors: nil }
+  }
+  player1_had_good_result = matchup_winner[user_selection.to_sym][computer_selection.to_sym]
+
+  _this_rounds_winner = case player1_had_good_result
+                        when true then "human"
+                        when false then "computer"
+                        else "nobody"
+                        end
 end
 
 def my_app
