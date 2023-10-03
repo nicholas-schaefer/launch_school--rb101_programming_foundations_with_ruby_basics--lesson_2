@@ -4,12 +4,16 @@ def display_prompt(text_to_prompt)
   puts "=> #{text_to_prompt}"
 end
 
-def randomly_generated_choice
-  VALID_CHOICES.sample
+def display_welcome_message
+  display_prompt("Welcome! Let's play a game of '#{VALID_CHOICES.join(", ")}'")
 end
 
-def request_user_choice
-  display_prompt("Your move! Enter either 'rock', 'paper', or 'scissors'")
+def display_goodbye_message
+  display_prompt("Leaving so soon?! Ok, goodbye...")
+end
+
+def display_request_user_choice
+  display_prompt("Your move! Enter one of the following choices: #{VALID_CHOICES.join("; ")}")
 end
 
 def display_winner(winner:, user_throw:, computer_throw:)
@@ -22,7 +26,7 @@ def display_tie_warning
   display_prompt("Because you got a tie! You'll have to play again")
 end
 
-def request_play_again
+def play_again?
   user_wants_to_play_again = nil
   loop do
     display_prompt("Would you like to play again?(Y / N)")
@@ -37,11 +41,15 @@ def request_play_again
   user_wants_to_play_again
 end
 
+def randomly_generated_choice
+  VALID_CHOICES.sample
+end
+
 def update_user_choice
   user_selection = ""
 
   loop do
-    request_user_choice()
+    display_request_user_choice()
     user_selection = gets.chomp.downcase
     break if VALID_CHOICES.include?(user_selection)
     display_prompt("Idiot! You didn't select a valid option. Try again...")
@@ -70,6 +78,7 @@ def update_round_winner(user_selection, computer_selection)
 end
 
 def my_app
+  display_welcome_message()
   loop do
     round_winner = ""
     loop do
@@ -84,9 +93,9 @@ def my_app
       break unless round_winner == "nobody"
       display_tie_warning()
     end
-    break if request_play_again() == false
+    break unless play_again?() == true
   end
-  display_prompt("Ok, goodbye!")
+  display_goodbye_message()
 end
 
 my_app()
